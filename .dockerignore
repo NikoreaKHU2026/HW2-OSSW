@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# DeepFace cached models (to prevent pulling large local weights into Docker context)
+.deepface/
+
+# Git
+.git/
+.gitignore
+.github/
+
+# IDEs
+.idea/
+.vscode/
+
+# Ignore Docker related files in context
+Dockerfile
+.dockerignore
