@@ -79,10 +79,5 @@ jobs:
         continue-on-error: true
       - 
         name: Run new container
-        run: |
-          docker run -d \
-            --name expression-prediction-api \
-            -p 8000:8000 \
-            --restart unless-stopped \
-            ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
-
+        run: docker run -d --name expression-prediction-api -p 8000:8000 --restart unless-stopped ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
+        
