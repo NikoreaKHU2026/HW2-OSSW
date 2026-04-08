@@ -1,6 +1,7 @@
 fastapi
 uvicorn
 python-multipart
+tf-keras
 deepface
 opencv-python-headless
 numpy
