@@ -52,3 +52,35 @@ jobs:
           # Use GitHub Actions cache to speed up subsequent builds
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Local Machine
+    needs: build-and-push
+    runs-on: self-hosted
+    # Only run deployment on pushes, not PRs
+    if: github.event_name != 'pull_request'
+    
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Pull latest Docker image
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
+        
+      - name: Stop existing container
+        run: docker stop expression-prediction-api || true
+        
+      - name: Remove existing container
+        run: docker rm expression-prediction-api || true
+        
+      - name: Run new container
+        run: |
+          docker run -d \
+            --name expression-prediction-api \
+            -p 8000:8000 \
+            --restart unless-stopped \
+            ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
+

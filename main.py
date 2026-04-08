@@ -32,9 +32,8 @@ async def predict_expression(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="Failed to decode image.")
 
         # Analyze image using DeepFace
-        # We use 'emotion' action here. The models are downloaded automatically on first use.
-        # enforce_detection=True throws an exception if no face is detected.
-        results = DeepFace.analyze(img_path=img, actions=['emotion'], enforce_detection=True)
+        # Modify DeepFace actions to include both 'emotion' and 'gender'
+        results = DeepFace.analyze(img_path=img, actions=['emotion', 'gender'], enforce_detection=True)
 
         # DeepFace returns a list of dictionaries if multiple faces are found
         if isinstance(results, list):
@@ -43,6 +42,8 @@ async def predict_expression(file: UploadFile = File(...)):
                 predictions.append({
                     "emotion": face["dominant_emotion"],
                     "all_emotions": face["emotion"],
+                    "gender": face["dominant_gender"],
+                    "gender_probabilities": face["gender"],
                     "face_region": face.get("region", {})
                 })
             return {"status": "success", "predictions": predictions}
@@ -52,6 +53,8 @@ async def predict_expression(file: UploadFile = File(...)):
                 "predictions": [{
                     "emotion": results["dominant_emotion"],
                     "all_emotions": results["emotion"],
+                    "gender": results["dominant_gender"],
+                    "gender_probabilities": results.get("gender"),
                     "face_region": results.get("region", {})
                 }]
             }
