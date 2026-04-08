@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     
     steps:
       - name: Checkout code
@@ -72,11 +72,13 @@ jobs:
         
       - name: Stop existing container
         run: docker stop expression-prediction-api || true
-        
-      - name: Remove existing container
+        continue-on-error: true
+      - 
+        name: Remove existing container
         run: docker rm expression-prediction-api || true
-        
-      - name: Run new container
+        continue-on-error: true
+      - 
+        name: Run new container
         run: |
           docker run -d \
             --name expression-prediction-api \
