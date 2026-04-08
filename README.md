@@ -1,2 +1,1 @@
-# HW2-OSSW
 HW 2
