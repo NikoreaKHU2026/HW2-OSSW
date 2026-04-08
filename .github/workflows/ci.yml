@@ -57,7 +57,7 @@ jobs:
     name: Deploy to Local Machine
     needs: build-and-push
     runs-on: self-hosted
-    # Only run deployment on pushes, not PRs
+    # Only run deployment on pushes, not PRsd
     if: github.event_name != 'pull_request'
     
     steps:
@@ -71,7 +71,7 @@ jobs:
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
         
       - name: Stop existing container
-        run: docker stop expression-prediction-api
+        run: docker stop expression-prediction-apid
         continue-on-error: true
       - 
         name: Remove existing container
