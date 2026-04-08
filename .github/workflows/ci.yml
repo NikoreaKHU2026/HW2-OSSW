@@ -71,10 +71,12 @@ jobs:
         run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
         
       - name: Stop existing container
-        run: docker stop expression-prediction-api || true
+        run: docker stop expression-prediction-api
+        continue-on-error: true
         
       - name: Remove existing container
-        run: docker rm expression-prediction-api || true
+        run: docker rm expression-prediction-api
+        continue-on-error: true
         
       - name: Run new container
         run: docker run -d --name expression-prediction-api -p 8000:8000 --restart unless-stopped ${{ secrets.DOCKERHUB_USERNAME }}/expression-prediction-api:latest
